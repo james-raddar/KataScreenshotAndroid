@@ -20,10 +20,15 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.TextView;
+
 import com.karumi.screenshot.R;
 import com.karumi.screenshot.SuperHeroesApplication;
 import com.karumi.screenshot.model.SuperHero;
 import com.karumi.screenshot.ui.presenter.SuperHeroesPresenter;
+
+import org.w3c.dom.Text;
+
 import java.util.List;
 import javax.inject.Inject;
 import butterknife.Bind;
@@ -34,7 +39,8 @@ public class MainActivity extends BaseActivity implements SuperHeroesPresenter.V
 
   private SuperHeroesAdapter adapter;
 
-  @Bind(R.id.tv_empty_case) View emptyCaseView;
+  @Bind(R.id.tv_empty_case)
+  TextView emptyCaseView;
   @Bind(R.id.recycler_view) RecyclerView recyclerView;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
@@ -84,5 +90,10 @@ public class MainActivity extends BaseActivity implements SuperHeroesPresenter.V
     recyclerView.setLayoutManager(new LinearLayoutManager(this));
     recyclerView.setHasFixedSize(true);
     recyclerView.setAdapter(adapter);
+  }
+
+  @Override
+  public void showNoNetworkError() {
+    emptyCaseView.setText("Not Found");
   }
 }

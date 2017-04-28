@@ -18,7 +18,10 @@ package com.karumi.screenshot.usecase;
 
 import android.os.Handler;
 import android.os.Looper;
+
+import com.karumi.screenshot.model.Result;
 import com.karumi.screenshot.model.SuperHero;
+import com.karumi.screenshot.model.SuperHeroDetailError;
 import com.karumi.screenshot.model.SuperHeroesRepository;
 import javax.inject.Inject;
 
@@ -39,16 +42,27 @@ public class GetSuperHeroByName {
   }
 
   private void loadSuperHeroByName(String name, final Callback callback) {
-    final SuperHero superHero = repository.getByName(name);
-    new Handler(Looper.getMainLooper()).post(new Runnable() {
-      @Override public void run() {
-        callback.onSuperHeroLoaded(superHero);
-      }
-    });
+    final Result<SuperHero,SuperHeroDetailError> superHeroResult = repository.getByName(name);
+    if(!superHeroResult.hasError()){
+      new Handler(Looper.getMainLooper()).post(new Runnable() {
+        @Override public void run() {
+          callback.onSuperHeroLoaded(superHeroResult.getValue());
+        }
+      });
+    }else{
+      new Handler(Looper.getMainLooper()).post(new Runnable() {
+        @Override public void run() {
+          callback.onError(superHeroResult.getError());
+        }
+      });
+
+    }
   }
 
   public interface Callback {
 
     void onSuperHeroLoaded(SuperHero superHero);
+
+    void onError(SuperHeroDetailError error);
   }
 }

@@ -17,6 +17,7 @@
 package com.karumi.screenshot.ui.presenter;
 
 import com.karumi.screenshot.model.SuperHero;
+import com.karumi.screenshot.model.SuperHeroListError;
 import com.karumi.screenshot.usecase.GetSuperHeroes;
 import java.util.List;
 import javax.inject.Inject;
@@ -41,6 +42,17 @@ public class SuperHeroesPresenter extends Presenter<SuperHeroesPresenter.View> {
           view.showSuperHeroes(superHeroes);
         }
       }
+
+      @Override
+      public void onError(SuperHeroListError error) {
+        View view = getView();
+        view.hideLoading();
+        switch (error){
+          case NO_NETWORK:
+            view.showEmptyCase();
+            view.showNoNetworkError();
+        }
+      }
     });
   }
 
@@ -57,5 +69,7 @@ public class SuperHeroesPresenter extends Presenter<SuperHeroesPresenter.View> {
     void showSuperHeroes(List<SuperHero> superHeroes);
 
     void openSuperHeroScreen(SuperHero superHero);
+
+    void showNoNetworkError();
   }
 }

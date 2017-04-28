@@ -17,6 +17,7 @@
 package com.karumi.screenshot.ui.presenter;
 
 import com.karumi.screenshot.model.SuperHero;
+import com.karumi.screenshot.model.SuperHeroDetailError;
 import com.karumi.screenshot.usecase.GetSuperHeroByName;
 import javax.inject.Inject;
 
@@ -42,11 +43,30 @@ public class SuperHeroDetailPresenter extends Presenter<SuperHeroDetailPresenter
         view.hideLoading();
         view.showSuperHero(superHero);
       }
+
+      @Override
+      public void onError(SuperHeroDetailError error) {
+        View view = getView();
+        view.hideLoading();
+        switch (error){
+          case NO_NETWORK:
+            view.showNoNetworkError();
+            break;
+          case NOT_FOUND:
+            view.showNotFoundError();
+            break;
+        }
+
+      }
     });
   }
 
   public interface View extends Presenter.View {
 
     void showSuperHero(SuperHero superHero);
+
+    void showNoNetworkError();
+
+    void showNotFoundError();
   }
 }

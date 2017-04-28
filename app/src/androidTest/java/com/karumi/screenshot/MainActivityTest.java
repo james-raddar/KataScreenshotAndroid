@@ -21,13 +21,19 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import com.karumi.screenshot.di.MainComponent;
 import com.karumi.screenshot.di.MainModule;
+import com.karumi.screenshot.model.NetworkChecker;
+import com.karumi.screenshot.model.Result;
 import com.karumi.screenshot.model.SuperHero;
+import com.karumi.screenshot.model.SuperHeroDetailError;
+import com.karumi.screenshot.model.SuperHeroListError;
 import com.karumi.screenshot.model.SuperHeroesRepository;
 import com.karumi.screenshot.ui.view.MainActivity;
 import it.cosenonjaviste.daggermock.DaggerMockRule;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -51,9 +57,16 @@ public class MainActivityTest extends ScreenshotTest {
   @Rule public IntentsTestRule<MainActivity> activityRule =
       new IntentsTestRule<>(MainActivity.class, true, false);
 
-  @Mock SuperHeroesRepository repository;
+    @Mock SuperHeroesRepository repository;
+    @Mock
+    NetworkChecker networkChecker;
 
-  @Test public void showsEmptyCaseIfThereAreNoSuperHeroes() {
+    @Before
+    public void setUp() throws Exception {
+        when(networkChecker.hasNetworkConnection()).thenReturn(true);
+    }
+
+    @Test public void showsEmptyCaseIfThereAreNoSuperHeroes() {
     givenThereAreNoSuperHeroes();
 
     Activity activity = startActivity();
@@ -94,22 +107,37 @@ public class MainActivityTest extends ScreenshotTest {
 
         compareScreenshot(activity);
     }
+    @Test
+    public void testShowNoNetworkError() throws Exception {
+        givenThereIsNoNetwork();
 
-  private List<SuperHero> givenThereAreSomeSuperHeroes(int numberOfSuperHeroes, boolean avengers) {
+        Activity activity = startActivity();
+
+        compareScreenshot(activity);
+    }
+
+
+
+    private void givenThereIsNoNetwork() {
+        when(repository.getAll()).thenReturn(new Result<List<SuperHero>,SuperHeroListError>(null,SuperHeroListError.NO_NETWORK));
+    }
+
+
+    private List<SuperHero> givenThereAreSomeSuperHeroes(int numberOfSuperHeroes, boolean avengers) {
     List<SuperHero> superHeroes = new LinkedList<>();
     for (int i = 0; i < numberOfSuperHeroes; i++) {
       String superHeroName = "SuperHero - " + i;
       String superHeroDescription = "Description Super Hero - " + i;
       SuperHero superHero = new SuperHero(superHeroName, null, avengers, superHeroDescription);
       superHeroes.add(superHero);
-      when(repository.getByName(superHeroName)).thenReturn(superHero);
+      when(repository.getByName(superHeroName)).thenReturn(new Result<SuperHero,SuperHeroDetailError>(superHero));
     }
-    when(repository.getAll()).thenReturn(superHeroes);
+    when(repository.getAll()).thenReturn(new Result<List<SuperHero>,SuperHeroListError>(superHeroes));
     return superHeroes;
   }
 
   private void givenThereAreNoSuperHeroes() {
-    when(repository.getAll()).thenReturn(Collections.<SuperHero>emptyList());
+    when(repository.getAll()).thenReturn(new Result<List<SuperHero>,SuperHeroListError>(Collections.<SuperHero>emptyList()));
   }
 
   private MainActivity startActivity() {

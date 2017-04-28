@@ -38,6 +38,7 @@ public class SuperHeroDetailActivity extends BaseActivity implements SuperHeroDe
 
   @Bind(R.id.iv_super_hero_photo) ImageView superHeroPhotoImageView;
   @Bind(R.id.tv_super_hero_name) TextView superHeroNameTextView;
+  @Bind(R.id.tv_empty_case) TextView emptyCaseTextView;
   @Bind(R.id.tv_super_hero_description) TextView superHeroDescriptionTextView;
   @Bind(R.id.iv_avengers_badge) View avengersBadgeView;
 
@@ -85,5 +86,18 @@ public class SuperHeroDetailActivity extends BaseActivity implements SuperHeroDe
 
   private String getSuperHeroName() {
     return getIntent().getExtras().getString(SUPER_HERO_NAME_KEY);
+  }
+
+  @Override
+  public void showNoNetworkError() {
+    emptyCaseTextView.setVisibility(View.VISIBLE);
+    emptyCaseTextView.setText("No Internet!");
+  }
+
+  @Override
+  public void showNotFoundError() {
+    emptyCaseTextView.setVisibility(View.VISIBLE);
+    emptyCaseTextView.setText("Not found");
+
   }
 }

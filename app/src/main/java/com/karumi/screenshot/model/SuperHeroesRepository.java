@@ -19,23 +19,33 @@ package com.karumi.screenshot.model;
 import java.util.LinkedList;
 import java.util.List;
 
+import static com.karumi.screenshot.model.SuperHeroDetailError.NO_NETWORK;
+
 public class SuperHeroesRepository {
 
   private final List<SuperHero> superHeroes;
+  private final NetworkChecker networkChecker;
 
-  public SuperHeroesRepository() {
+  public SuperHeroesRepository(NetworkChecker networkChecker) {
+    this.networkChecker = networkChecker;
     this.superHeroes = new LinkedList<>();
     fillRepositoryWithFakeData();
   }
 
-  public List<SuperHero> getAll() {
+  public Result<List<SuperHero>,SuperHeroListError> getAll() {
     waitABit();
+    if(!networkChecker.hasNetworkConnection()){
+return new Result<>(null,SuperHeroListError.NO_NETWORK);
+    }
 
-    return superHeroes;
+    return new Result<>(superHeroes);
   }
 
-  public SuperHero getByName(String name) {
+  public Result<SuperHero,SuperHeroDetailError> getByName(String name) {
     waitABit();
+    if(!networkChecker.hasNetworkConnection()){
+      return new Result<>(null,NO_NETWORK);
+    }
 
     SuperHero result = null;
     for (SuperHero superHero : superHeroes) {
@@ -44,7 +54,7 @@ public class SuperHeroesRepository {
         break;
       }
     }
-    return result;
+    return new Result<>(result);
   }
 
   private void waitABit() {

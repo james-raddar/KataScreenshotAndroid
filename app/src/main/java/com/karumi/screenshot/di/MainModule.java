@@ -16,6 +16,7 @@
 
 package com.karumi.screenshot.di;
 
+import com.karumi.screenshot.model.NetworkChecker;
 import com.karumi.screenshot.model.SuperHeroesRepository;
 import dagger.Module;
 import dagger.Provides;
@@ -23,7 +24,10 @@ import javax.inject.Singleton;
 
 @Module public class MainModule {
 
-  @Provides @Singleton public SuperHeroesRepository provideSuperHeroesRepository() {
-    return new SuperHeroesRepository();
+  @Provides @Singleton public SuperHeroesRepository provideSuperHeroesRepository(NetworkChecker networkChecker) {
+    return new SuperHeroesRepository(networkChecker);
+  }
+  @Provides @Singleton public NetworkChecker provideNetworkChecker() {
+    return new NetworkChecker();
   }
 }
