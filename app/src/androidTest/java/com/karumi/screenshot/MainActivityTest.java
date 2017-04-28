@@ -61,6 +61,40 @@ public class MainActivityTest extends ScreenshotTest {
     compareScreenshot(activity);
   }
 
+  @Test
+  public void showsOneSuperHeroIfThereAreOneHero() throws Exception {
+    givenThereAreSomeSuperHeroes(1,false);
+
+    Activity activity = startActivity();
+
+    compareScreenshot(activity);
+  }
+
+    @Test
+    public void testTwoSuperHeroScreen() throws Exception {
+        givenThereAreSomeSuperHeroes(2,false);
+
+        Activity activity = startActivity();
+
+        compareScreenshot(activity);
+    }
+    @Test
+    public void testAvengersSuperHeroAvengers() throws Exception {
+        givenThereAreSomeSuperHeroes(2,true);
+
+        Activity activity = startActivity();
+
+        compareScreenshot(activity);
+    }
+    @Test
+    public void testMultipleSuperHeroes() throws Exception {
+        givenThereAreSomeSuperHeroes(10,false);
+
+        Activity activity = startActivity();
+
+        compareScreenshot(activity);
+    }
+
   private List<SuperHero> givenThereAreSomeSuperHeroes(int numberOfSuperHeroes, boolean avengers) {
     List<SuperHero> superHeroes = new LinkedList<>();
     for (int i = 0; i < numberOfSuperHeroes; i++) {
