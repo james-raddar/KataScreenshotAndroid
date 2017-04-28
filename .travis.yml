@@ -30,4 +30,4 @@ before_script:
   - adb shell input keyevent 82 &
 
 script:
-  - ./gradlew checkstyle build verifyMode screenshotTests -Pcom.android.build.threadPoolSize=1 -Dorg.gradle.parallel=false -Dorg.gradle.jvmargs="-Xms1024m -Xmx1024m" -Dorg.gradle.daemon=false
+  - ./gradlew build verifyMode screenshotTests -Pcom.android.build.threadPoolSize=1 -Dorg.gradle.parallel=false -Dorg.gradle.jvmargs="-Xms1024m -Xmx1024m" -Dorg.gradle.daemon=false
