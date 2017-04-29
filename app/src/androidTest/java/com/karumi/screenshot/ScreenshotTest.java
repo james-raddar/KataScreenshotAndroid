@@ -26,9 +26,12 @@ import android.view.WindowManager;
 import com.facebook.testing.screenshot.Screenshot;
 import com.facebook.testing.screenshot.ViewHelpers;
 
+import org.junit.Test;
+
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 
 @LargeTest public class ScreenshotTest {
+
 
   protected void compareScreenshot(Activity activity) {
     Screenshot.snapActivity(activity).record();

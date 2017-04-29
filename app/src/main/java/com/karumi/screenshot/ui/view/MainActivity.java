@@ -94,6 +94,6 @@ public class MainActivity extends BaseActivity implements SuperHeroesPresenter.V
 
   @Override
   public void showNoNetworkError() {
-    emptyCaseView.setText("Not Found");
+    emptyCaseView.setText("No Internet");
   }
 }
