@@ -9,8 +9,9 @@ public class Result<X,Y> {
         this.value = value;
         this.error = error;
     }
+
     public Result(X value) {
-        this(value,null);
+        this(value, null);
     }
 
 
@@ -23,6 +24,6 @@ public class Result<X,Y> {
     }
     
     public boolean hasError(){
-        return error!=null;
+        return error != null;
     }
 }

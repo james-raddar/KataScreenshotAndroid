@@ -1,0 +1,85 @@
+/*** EJERCICIO ***/
+
+Queremos hacer tests de UI utilizando capturas de pantalla. IMPORTANTE: Las pantallas deben ser las
+mismas (mismos px, mismas densidad, etc). Cualquier tipo de animación hay que desactivarla. Es importante
+resaltar que en los tests de UI se prueban cosas que no tendrían sentido en tests de otros tipos, como por
+ejemplo, nombres muy largos.
+Es una buena técnica para probar UI complejas y con partes que puedan tener muchos estados diferentes.
+También nos sirve para tener un histórico de como ha ido cambiando la app en el tiempo.
+
+NOTAS:
+    - Estos tests NO soporta por ahora la API 23 y superiores por problemas con los permisos
+    - Puede ser que con las imágenes vacías en Picasso se produzcan errores (estar atento)
+    - Hay que dejar SIEMPRE la puerta abierta a desactivar las animaciones para poder probar los tests
+      de screenshots
+
+
+/*** PASOS ***/
+
+1) Forkeamos el proyecto desde https://github.com/Karumi/KataScreenshotAndroid y nos vamos a la
+rama de kata-screenshot
+
+2) Opcionalmente añadimos el repositorio a TravisCI para la integración contínua. El checkstyle del
+archivo de travis.yml lo sustituimos por el de este proyecto (el checkstyle que viene por defecto
+son los estilos de Karumi y hay que quitarlo)
+
+3) Existen 2 pasos para los tests:
+    - RECORD MODE: Se encarga de generar TODAS las screenshots. No se pueden generar algunas, siempre
+                   todas las que existan en el test y borra las anteriores. Ejecutar la tarea:
+                   ./gradlew recordMode screenshotTests
+    - VERIFY MODE: Lo que hace es comparar con las imágenes generadas: Ejecutar tarea:
+                   ./gradlew verifyMode screenshotTests
+
+Con el programa ImageMagic podemos comparar los píxeles de ambas imágenes por si se da el caso de que
+nos indica que dos imágenes son distintas pero no conseguimos verlo
+
+4) Instalar python 2.7.10 o 2.7.13
+
+5) Ejecutar todos los comandos que vienen en la parte de "before_script" del archivo travis.yml
+Si no funciona el sudo pip probar esto: "sudo easy_install pip" y/o "sudo pip install image". Si no
+funciona, comprobar que está el Android Home configurado con: "export ANDROID_HOME=/ruta/android_sdk"
+
+
+/*** PREVIO TESTS ***/
+
+Vamos a crear una variable estática global que indique si estamos ejecutando tests o no. También vamos
+a crear un wrapper Result para añadir los errores. Y un enum para los errores. Estos enums están muy
+limitados en Java. Otra forma seróa una interfaz una interfaz e implementar los distintos tipos de
+errores usando instanceof
+
+
+/*** TESTS ***/
+
+<!-- MAIN ACTIVITY -->
+
+1) Mostrar el empty case si la lista de superhéroes está vacía
+
+2) Mostrar 1 superhéroe de una lista con 1
+
+3) Mostrar 2 superhéroes de una lista con 2
+
+4) Mostrar 2 superhéroes avengers de una lista con dos
+
+5) Mostrar superhéroes de una lista con 10 (se verán más o menos en función de la pantalla del móvil)
+
+6) Mostrar que no hay conexión
+
+7) Mostrar el progressbar al cargar
+
+<!-- DETAIL ACTIVITY -->
+
+1) Mostrar un superhéroe normal
+
+2) Mostrar un superhéroe avenger
+
+3) Mostrar un superhéroe con nombre largo
+
+4) Mostrar un superhéroe con descripción larga
+
+5) Mostrar un superhéroe sin nombre
+
+6) Mostrar un superhéroe sin descripción
+
+7) Mostrar que no se ha encontrado superhéro
+
+8) Mostrar que no hay conexión

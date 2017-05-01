@@ -75,15 +75,16 @@ public class MainActivityTest extends ScreenshotTest {
 
     @Before
     public void setUp() throws Exception {
-        TestConfig.RUNNING_UI_TESTS=true;
+        TestConfig.RUNNING_UI_TESTS = true;
         when(networkChecker.hasNetworkConnection()).thenReturn(true);
     }
 
     @After
     public void tearDown() throws Exception {
-        TestConfig.RUNNING_UI_TESTS=false;
+        TestConfig.RUNNING_UI_TESTS = false;
     }
 
+    // Test 1
     @Test
     public void showsEmptyCaseIfThereAreNoSuperHeroes() {
         givenThereAreNoSuperHeroes();
@@ -93,6 +94,7 @@ public class MainActivityTest extends ScreenshotTest {
         compareScreenshot(activity);
     }
 
+    // Test 2
     @Test
     public void showsOneSuperHeroIfThereAreOneHero() throws Exception {
         givenThereAreSomeSuperHeroes(1, false);
@@ -102,6 +104,7 @@ public class MainActivityTest extends ScreenshotTest {
         compareScreenshot(activity);
     }
 
+    // Test 3
     @Test
     public void testTwoSuperHeroScreen() throws Exception {
         givenThereAreSomeSuperHeroes(2, false);
@@ -111,6 +114,7 @@ public class MainActivityTest extends ScreenshotTest {
         compareScreenshot(activity);
     }
 
+    // Test 4
     @Test
     public void testAvengersSuperHeroAvengers() throws Exception {
         givenThereAreSomeSuperHeroes(2, true);
@@ -120,6 +124,7 @@ public class MainActivityTest extends ScreenshotTest {
         compareScreenshot(activity);
     }
 
+    // Test 5
     @Test
     public void testMultipleSuperHeroes() throws Exception {
         givenThereAreSomeSuperHeroes(10, false);
@@ -129,6 +134,7 @@ public class MainActivityTest extends ScreenshotTest {
         compareScreenshot(activity);
     }
 
+    // Test 6
     @Test
     public void testShowNoNetworkError() throws Exception {
         givenThereIsNoNetwork();
@@ -138,13 +144,17 @@ public class MainActivityTest extends ScreenshotTest {
         compareScreenshot(activity);
     }
 
+    // Test 7
     @Test
     public void showsProgressBarWhileLoading() throws Exception {
+        // Lo hacemos con el doAnswer y el Thread.sleep porque el progressbar esta en movimiento y las
+        // capturas al verificarse no coincidiran. Otra forma para solucionar esto seria hacer el progressbar
+        // para los test determinado y con un valor de progreso fijo
         doAnswer(new Answer() {
             @Override
             public Object answer(InvocationOnMock invocation) throws Throwable {
                 Thread.sleep(2000);
-                return new Result<List<SuperHero>,SuperHeroListError>(null,SuperHeroListError.NO_NETWORK);
+                return new Result<List<SuperHero>,SuperHeroListError>(null, SuperHeroListError.NO_NETWORK);
             }
         }).when(repository).getAll();
 

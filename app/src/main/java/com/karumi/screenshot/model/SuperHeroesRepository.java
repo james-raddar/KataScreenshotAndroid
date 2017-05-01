@@ -35,7 +35,7 @@ public class SuperHeroesRepository {
   public Result<List<SuperHero>,SuperHeroListError> getAll() {
     waitABit();
     if(!networkChecker.hasNetworkConnection()){
-return new Result<>(null,SuperHeroListError.NO_NETWORK);
+      return new Result<>(null,SuperHeroListError.NO_NETWORK);
     }
 
     return new Result<>(superHeroes);
@@ -44,7 +44,7 @@ return new Result<>(null,SuperHeroListError.NO_NETWORK);
   public Result<SuperHero,SuperHeroDetailError> getByName(String name) {
     waitABit();
     if(!networkChecker.hasNetworkConnection()){
-      return new Result<>(null,NO_NETWORK);
+      return new Result<>(null, NO_NETWORK);
     }
 
     SuperHero result = null;

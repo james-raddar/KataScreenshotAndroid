@@ -54,6 +54,7 @@ public class SuperHeroDetailActivityTest extends ScreenshotTest {
         when(networkChecker.hasNetworkConnection()).thenReturn(true);
     }
 
+    // Test 1
     @Test
     public void showsRegularSuperHero() throws Exception {
         SuperHero hero = givenThereIsASuperHero(false);
@@ -62,6 +63,8 @@ public class SuperHeroDetailActivityTest extends ScreenshotTest {
 
         compareScreenshot(activity);
     }
+
+    // Test 2
 
     @Test
     public void showsAvengerSuperHero() throws Exception {
@@ -72,6 +75,7 @@ public class SuperHeroDetailActivityTest extends ScreenshotTest {
         compareScreenshot(activity);
     }
 
+    // Test 3
     @Test
     public void showsASuperHeroWithLongName() throws Exception {
         SuperHero hero = givenThereIsASuperHeroWithLargeName(false);
